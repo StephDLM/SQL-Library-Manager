@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/StephDLM/SQL-Library-Manager#readme",
   "dependencies": {
-    "sequelize": "^6.21.3"
+    "sequelize": "^6.21.3",
+    "sqlite3": "^5.0.10"
   }
 }
