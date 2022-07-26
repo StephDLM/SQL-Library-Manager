@@ -1,53 +1,41 @@
-const db = require('./db');
-const { Movie, Person } = db.models;
+var createError = require('http-errors');
+var express = require('express');
+var path = require('path');
+var cookieParser = require('cookie-parser');
+var logger = require('morgan');
 
-(async () => {
-  await db.sequelize.sync({ force: true });
+var indexRouter = require('./routes/index');
+var usersRouter = require('./routes/users');
 
+var app = express();
 
-  try {
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
 
-    const movieById = await Movie.findByPk(1); //All model instances
-    console.log(movieById.toJSON());
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 
-    const movie = await Movie.create({
-      title: 'Hereditary',
-      runtime: 126,
-      releaseDate: '2018-07-08',
-      isAvailableOnVHS: false,
-      
-    });
-    console.log(movie.toJSON());
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
 
-    const movie2 = await Movie.create({
-      title: "",
-      runtime: 104,
-      releaseDate: '2017-02-24',
-      isAvailableOnVHS: false,
-    });
-    console.log(movie2.toJSON());
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  next(createError(404));
+});
 
-    const person = await Person.create({
-        firstName: 'Stella',
-        lastName: 'Dilami',
-      });
-      console.log(person.toJSON());
+// error handler
+app.use(function(err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-    const movie3 = await Movie.build({
-        title: 'Interstellar',
-        runtime: 103,
-        releaseDate: '2010-06-18',
-        isAvailableOnVHS: false,
-    });
-    await movie3.save(); // save the record
-    console.log(movie3.toJSON());
-  
+  // render the error page
+  res.status(err.status || 500);
+  res.render('error');
+});
 
-  } catch (error) {
-    if (error.name === 'SequelizeValidationError') { 
-        const errors = error.errors.map(err => err.message);
-        console.error('Validation errors: ', errors);
-    } else {
-        throw error;
-     } }
-})();
+module.exports = app;
