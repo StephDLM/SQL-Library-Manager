@@ -7,7 +7,7 @@ const { Movie, Person } = db.models;
 
   try {
 
-    const movieById = await Movie.findByPk(1);
+    const movieById = await Movie.findByPk(1); //All model instances
     console.log(movieById.toJSON());
 
     const movie = await Movie.create({
