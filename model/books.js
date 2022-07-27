@@ -25,10 +25,10 @@ module.exports = {
         allowNull: false,
         validate: {
           notNull: {
-            msg: 'Please provide a value for "title"',
+            msg: 'Please provide a value for "author"',
           },
           notEmpty: {
-            msg: 'Please provide a value for "title"',
+            msg: 'Please provide a value for "author"',
           },
         },
         
@@ -49,7 +49,7 @@ module.exports = {
       }
     });
   },
-  async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Books');
-  }
+  // async down(queryInterface, Sequelize) {
+  //   await queryInterface.dropTable('Books');
+  // }
 };

@@ -3,7 +3,10 @@ const sequelize = new Sequelize({
     dialect: 'sqlite',
     storage: 'books.db'
   });//Instantiate Sequelize by initializing a variable named sequelize to the Sequelize() constructor
+  
+  // async IIFE
   (async () => {
+    await sequelize.sync({ force: true });
     try {
       await sequelize.authenticate();
       console.log('Connection to the database successful!');
