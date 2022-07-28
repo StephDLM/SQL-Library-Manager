@@ -1,8 +1,33 @@
-const Sequelize = require('sequelize');
-const sequelize = new Sequelize({
-    dialect: 'sqlite',
-    storage: 'books.db'
-  });//Instantiate Sequelize by initializing a variable named sequelize to the Sequelize() constructor
+const Sequelize =require('./models/index.js').sequelize;
+var createError = require('http-errors');
+var express = require('express');
+var path = require('path');
+var cookieParser = require('cookie-parser');
+var logger = require('morgan');
+var indexRouter = require('./routes/index');
+var booksRouter = require('./routes/books');
+var app = express();
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'pug');
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.use('/', indexRouter);
+app.use('/books', booksRouter);
+
+
+
+
+
+
+// const sequelize = new Sequelize({
+//     dialect: 'sqlite',
+//     storage: 'books.db'
+//   });//Instantiate Sequelize by initializing a variable named sequelize to the Sequelize() constructor
   
   // async IIFE
   (async () => {
@@ -16,29 +41,10 @@ const sequelize = new Sequelize({
   })();
   
 
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
 
-var indexRouter = require('./routes/index');
-var booksRouter = require('./routes/books');
 
-var app = express();
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
 
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-
-app.use('/', indexRouter);
-app.use('/books', booksRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -56,7 +62,6 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-//pass an object as a parameter to next
 //render error page 404 by sending response to the client, setting up the response status to 404, and render not-found view
 app.use ((req,res, next) => {
     const err = new Error('not-found');
@@ -82,10 +87,13 @@ app.use((err, req, res, next) => {
   });
 
 //start server
-app.listen(3001, () => {
-    console.log('The application is running on localhost:3000!')
+app.listen(3002, () => {
+    console.log('The application is running on localhost:3002!')
 });
 
 
 
+
 module.exports = app;
+
+
