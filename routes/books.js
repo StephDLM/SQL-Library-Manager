@@ -22,53 +22,77 @@ router.get('/', async(req, res, next) => {
     console.log( books.map(book => book.toJSON()) );
    });
 
-/* GET users listing. */
-router.get('/', asyncHandler(async(req, res) => {
-  res.render("Books/index",{ books:{}, title: "Books List" });
-}));
+
+// /* GET book listing. */
+// router.get('/', asyncHandler(async(req, res) => {
+//   res.render("index",{ books:{}, title: "Books List" });
+// }));
 
 
-//get /books - Shows the full list of books
+//get - Shows the full list of books
 router.get('/books', asyncHandler(async(req, res) => {
     const books = await Book.findAll();
     res.render("index", { books });
 
    }));
 
-//get /books/new - Shows the create new book form
+ //get- Shows the create new book form
 router.get('/books/new/:id', asyncHandler(async(req, res) => {
-    res.render("books/new", { book: {}, title: "New Book" });
-   }));
-
-//post /books/:id - Updates book info in the database
-router.post('/books/:id', asyncHandler(async(req, res) => {
-  const book = await Book.findbyPk(req.params.id); //async call
-  await books.update(req.body)
-  res.redirect("/books/" + books.id);
- // res.render("articles/edit", { book, title: "Edit Book" })
+  res.render("books/new", { book: {}, title: "New Book" });
  }));
 
-//get /books/:id - Shows book detail form
-router.post('/', asyncHandler(async(req, res) => {
+ //post - Posts a new book to the database
+ router.get('/books/:id', asyncHandler(async(req, res) => {
+  res.render("/books/show", { books: {}, title: "Book Title" });
+ }));
+
+//get - Shows book detail form
+router.post('/books/:id', asyncHandler(async(req, res) => {
   const books = await Book.create(req.body);
   res.redirect("/books/" + books.id);
  }));
 
 
- //post /books/new - Posts a new book to the database
-router.get('/books/:id', asyncHandler(async(req, res) => {
-  res.render("/books/show", { books: {}, title: "Book Title" });
- }));
+//post- Updates book info in the database
+router.post('/books/:id', asyncHandler(async(req, res) => {
+  let book;
+  try {
+   book = await Book.findbyPk(req.params.id); //async call
+   if(book){
+    await books.update(req.body)
+    res.redirect("/books/" + books.id);
+ // res.render("articles/edit", { book, title: "Edit Book" })
+  } else {
+    res.sendStatus(404);
+  }
+} catch (error){
+  if(error.name === "SequelizeValidationError") {
+    book = await Book.build(req.body);
+    book.id = req.params.id; // make sure correct book gets updated
+    res.render("book/edit", { article, errors: error.errors, title: "Edit Book" })
+  } else {
+    throw error;
+  }
+}}));
 
 
 //post /books/:id/delete - Deletes a book. Careful, this can’t be undone. It can be helpful to create a new “test” book to test deleting
 router.get("/books/:id/delete", asyncHandler(async (req, res) => {
-  res.render("books/delete", { books: {}, title: "Delete Book" });
+ // res.render("books/delete", { books: {}, title: "Delete Book" });
+ const book = await Article.findByPk(req.params.id);
+ if(book) {
+   await book.destroy();
+   res.redirect("/books");
+ } else {
+   res.sendStatus(404);
+ }
 }));
 
-//delete specific book (don't know if I need this)
-router.post('/books/:id/delete', asyncHandler(async(req, res) => {
-  res.redirect("/books");
- }));
+// //delete specific book (don't know if I need this)
+// router.post('/books/:id/delete', asyncHandler(async(req, res) => {
+//   res.redirect("/books");
+//  }));
 
 module.exports = router;
+
+
