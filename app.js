@@ -19,11 +19,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/books', booksRouter);
 
-
-
-
-
-
 // const sequelize = new Sequelize({
 //     dialect: 'sqlite',
 //     storage: 'books.db'
@@ -31,21 +26,15 @@ app.use('/books', booksRouter);
   
   // async IIFE
   (async () => {
-    await sequelize.sync({ force: true });
     try {
-      await sequelize.authenticate();
+      await Sequelize.authenticate();
       console.log('Connection to the database successful!');
     } catch (error) {
       console.error('Error connecting to the database: ', error);
     }
+    
   })();
   
-
-
-
-
-
-
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
@@ -90,9 +79,6 @@ app.use((err, req, res, next) => {
 app.listen(3002, () => {
     console.log('The application is running on localhost:3002!')
 });
-
-
-
 
 module.exports = app;
 
