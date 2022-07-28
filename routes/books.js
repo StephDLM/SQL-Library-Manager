@@ -15,12 +15,12 @@ function asyncHandler(cb){
 }
 
 /* GET home page. */
-router.get('/', async(req, res, next) => {
+router.get('/books', asyncHandler(async(req, res, next) => {
   //res.render('index', { title: 'Express' });
-    const book = await book.findAll();
+    const books = await Book.findAll();
     res.render("index", { books });
-    console.log( books.map(book => book.toJSON()) );
-   });
+    console.log( Book.map(Book => Book.toJSON()) );
+}));
 
 
 // /* GET book listing. */

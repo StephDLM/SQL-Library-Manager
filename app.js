@@ -24,9 +24,10 @@ app.use('/books', booksRouter);
 //     storage: 'books.db'
 //   });//Instantiate Sequelize by initializing a variable named sequelize to the Sequelize() constructor
   
-  // async IIFE
+  // async IIFE: (Immediately Invoked Function Expression)
   (async () => {
     try {
+      await Sequelize.sync();
       await Sequelize.authenticate();
       console.log('Connection to the database successful!');
     } catch (error) {
@@ -53,7 +54,7 @@ app.use(function(err, req, res, next) {
 
 //render error page 404 by sending response to the client, setting up the response status to 404, and render not-found view
 app.use ((req,res, next) => {
-    const err = new Error('not-found');
+    const err = new Error('page-not-found');
     err.status = 404;
     err.message = "This web page can't be located";
     console.log("This web page can't be located", err);
@@ -65,7 +66,7 @@ app.use((err, req, res, next) => {
     // setting locals with error property
     if (err){
         if (err.status === 404){
-            res.status(404).render('not-found', { err });
+            res.status(404).render('page-not-found', { err });
                 } else {
             err.status = 500;
             err.message = "Oops! Something went wrong with the server.";
@@ -76,8 +77,8 @@ app.use((err, req, res, next) => {
   });
 
 //start server
-app.listen(3002, () => {
-    console.log('The application is running on localhost:3002!')
+app.listen(3000, () => {
+    console.log('The application is running on localhost:3000!')
 });
 
 module.exports = app;
