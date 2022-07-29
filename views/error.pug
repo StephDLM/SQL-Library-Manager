@@ -1,7 +1,8 @@
-if(error)
+if(errors)
   h2.error Sorry, an error occured!
-  ul.errors
-    each errors in error
+  ul.error
+    each error in errors
       li
         =error.message
+
 
