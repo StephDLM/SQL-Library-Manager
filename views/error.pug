@@ -1,6 +1,6 @@
-if(errors)
-  h2.error Oops an error occurred!
+if(error)
+  h2.error Sorry an error occurred!
   ul.error
-    each error in errors
+    each errors in error
       li
-        =error.message
+        =errors.message
