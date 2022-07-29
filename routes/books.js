@@ -14,34 +14,29 @@ function asyncHandler(cb){
   }
 }
 
-/* GET home page. */
-router.get('/', asyncHandler(async(req, res) => {
-  //res.render('index', { title: 'Express' });
-    const books = await Book.findAll();
-    res.render("index", { books });
-    console.log( Book.map(Book => Book.toJSON()) );
-}));
-
-// /* GET book listing. */
+// /* GET home page. */
 // router.get('/', asyncHandler(async(req, res) => {
-//   res.render("index",{ books:{}, title: "Books List" });
+//   //res.render('index', { title: 'Express' });
+//     const books = await Book.findAll();
+//     res.render("index", { books });
+//     console.log( Book.map(Book => Book.toJSON()) );
 // }));
 
 
 //get - Shows the full list of books
 router.get('/', asyncHandler(async(req, res) => {
-    const book = await Book.findAll();
-    res.render("index", { book });
+    const books = await Book.findAll();
+    res.render("index", { books });
 
    }));
 
  //get- Shows the create new book form
-router.get('/new/:id', asyncHandler(async(req, res) => {
-  res.render("/new", { book: {}, title: "New Book" });
+router.get('/new', asyncHandler(async(req, res) => {
+  res.render("new-book", { book: {}, title: "New Book" });
  }));
 
  //post - Posts a new book to the database
- router.post('/:id', asyncHandler(async(req, res) => {
+ router.post('/', asyncHandler(async(req, res) => {
   //res.render("/books/show", { books: {}, title: "Book Title" });
   let book;
   try {
@@ -50,27 +45,15 @@ router.get('/new/:id', asyncHandler(async(req, res) => {
   } catch (error) {
     if(error.name === "SequelizeValidationError") {
       article = await Book.build(req.body);
-      res.render("/new", { book, errors: error.errors, title: "New Book" })
+      res.render("new-book", { book, errors: error.errors, title: "New Book" })
     } else {
       throw error;
     }  
 }}));
-
- 
-// //get - Shows book detail form
-// router.post('/:id', asyncHandler(async(req, res) => {
-//   const book = await Book.findByPk(req.params.id);
-//  // res.redirect("/books/" + books.id);
-//  if(book) {
-//   res.render("/show", { book, title: book.title });  
-// } else {
-//   res.sendStatus(404);
-// }
-//  }));
  
 
 //post- Updates book info in the database
-router.post('/:id', asyncHandler(async(req, res) => {
+router.post('/', asyncHandler(async(req, res) => {
   let book;
   try {
    book = await Book.findbyPk(req.params.id); //async call
@@ -93,7 +76,7 @@ router.post('/:id', asyncHandler(async(req, res) => {
 
 
 //post  Deletes a book
-router.get("/:id/delete", asyncHandler(async (req, res) => {
+router.get("/delete", asyncHandler(async (req, res) => {
  // res.render("books/delete", { books: {}, title: "Delete Book" });
  const book = await Book.findByPk(req.params.id);
  if(book) {
