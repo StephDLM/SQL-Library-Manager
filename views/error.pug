@@ -1,5 +1,7 @@
-extends layout
+if(error)
+  h2.error Sorry, an error occured!
+  ul.errors
+    each errors in error
+      li
+        =error.message
 
-block content
-  h1= title
-  h2= error.message

@@ -1,24 +1,24 @@
-extends ../layout
+extends layout
 
 block content
   h2 New Book
   
-  //- include errors
+  include error
   
   form(action="/books", method="post")
     p
       label(for='title') Title
-      input#title(name=book.title type='text')
+      input( name='title' type='text' value=book.title id='title' )
     p
       label(for='author') Author
-      input#author(name=book.author type='text')
+      input( name='author' type='text' value=book.author id='author' )
     p
       label(for='genre') Genre
-      input#genre(name=book.genre type='text')
+      input( name='genre' type='text' value=book.genre id='genre' )
     p
       label(for='year') Year
-      input#year(name=book.year type='text')
+      input( name='year' type='text' value=book.year id='year' )
     p
       input(type='submit' value='Create New Book')
     p
-      a.button(href='all_books.html') Cancel
+      a.button(href='/') Cancel

@@ -22,11 +22,6 @@ app.use("/static", express.static("public"));
 app.use('/', indexRouter);
 app.use('/books', booksRouter);
 
-// const sequelize = new Sequelize({
-//     dialect: 'sqlite',
-//     storage: 'books.db'
-//   });//Instantiate Sequelize by initializing a variable named sequelize to the Sequelize() constructor
-  
   // async IIFE: (Immediately Invoked Function Expression)
   (async () => {
     try {
