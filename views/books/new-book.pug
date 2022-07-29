@@ -1,24 +1,24 @@
-//- extends ../layout
+extends ../layout
 
-//- block content
-//-   h2= New Book
+block content
+  h2= New Book
   
-//-   include errors
+  include errors
   
-//-   form(action="/books", method="post")
-//-     p
-//-       label(for='title') Title
-//-       input#title(name=book.title type='text')
-//-     p
-//-       label(for='author') Author
-//-       input#author(name=book.author type='text')
-//-     p
-//-       label(for='genre') Genre
-//-       input#genre(name=book.genre type='text')
-//-     p
-//-       label(for='year') Year
-//-       input#year(name=book.year type='text')
-//-     p
-//-       input(type='submit' value='Create New Book')
-//-     p
-//-       a.button(href='all_books.html') Cancel
+  form(action="/books", method="post")
+    p
+      label(for='title') Title
+      input#title(name=book.title type='text')
+    p
+      label(for='author') Author
+      input#author(name=book.author type='text')
+    p
+      label(for='genre') Genre
+      input#genre(name=book.genre type='text')
+    p
+      label(for='year') Year
+      input#year(name=book.year type='text')
+    p
+      input(type='submit' value='Create New Book')
+    p
+      a.button(href='all_books.html') Cancel

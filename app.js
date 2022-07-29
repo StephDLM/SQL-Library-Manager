@@ -1,5 +1,6 @@
 const Sequelize =require('./models/index.js').sequelize;
 var createError = require('http-errors');
+const server = require("http").createServer(app)
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
@@ -15,6 +16,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+//using a static route AND express.static method to serve static public files
+app.use("/static", express.static("public"));
 
 app.use('/', indexRouter);
 app.use('/books', booksRouter);
@@ -36,10 +39,10 @@ app.use('/books', booksRouter);
     
   })();
   
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
-});
+// // catch 404 and forward to error handler
+// app.use(function(req, res, next) {
+//   next(createError(404));
+// });
 
 // error handler
 app.use(function(err, req, res, next) {
@@ -52,7 +55,7 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-//render error page 404 by sending response to the client, setting up the response status to 404, and render not-found view
+// render error page 404 by sending response to the client, setting up the response status to 404, and render not-found view
 app.use ((req,res, next) => {
     const err = new Error('page-not-found');
     err.status = 404;
@@ -61,7 +64,7 @@ app.use ((req,res, next) => {
     next(err);
 });
 
-//render global error handler
+// render global error handler
 app.use((err, req, res, next) => {
     // setting locals with error property
     if (err){
@@ -77,8 +80,8 @@ app.use((err, req, res, next) => {
   });
 
 //start server
-app.listen(3000, () => {
-    console.log('The application is running on localhost:3000!')
+app.listen(3001, () => {
+    console.log('The application is running on localhost:3001!')
 });
 
 module.exports = app;
