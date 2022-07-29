@@ -1,4 +1,4 @@
-extends /layout
+extends layout
 
 block content   
     h2 Update Book
@@ -6,7 +6,6 @@ block content
     include error 
 
     form(method="post")
-        include form
         p
             label(for='title') Title
             input(name='title' type='text' value=book.title id='title')
