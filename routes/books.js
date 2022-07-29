@@ -27,6 +27,7 @@ router.get('/new', asyncHandler(async(req, res) => {
   res.render("new-book", { book: {}, title: "Books" });
  }));
 
+
  //post - Posts a new book to the database
  router.post('/new', asyncHandler(async(req, res) => {
   let book;
@@ -41,16 +42,27 @@ router.get('/new', asyncHandler(async(req, res) => {
       throw error;
     }  
 }}));
- 
+
+//  /* new created below*/ 
+// //Get book to edit
+router.get("/edit/:id", asyncHandler(async(req, res) => {
+  const book = await Book.findByPk(req.params.id);
+  if(book) {
+    res.render("update-book", { book });      
+  } else {
+    res.sendStatus(404);
+  }
+}));
+
 
 //post- Updates book info in the database
-router.post('/:id', asyncHandler(async(req, res) => {
+router.post("/edit/:id", asyncHandler(async(req, res) => {
   let book;
   try {
    book = await Book.findByPk(req.params.id); //async call
    if(book){
     await book.update(req.body)
-    res.redirect("/books");
+    res.redirect("/");
   // res.render("articles/edit", { book, title: "Edit Book" })
   } else {
     res.sendStatus(404);
@@ -64,6 +76,7 @@ router.post('/:id', asyncHandler(async(req, res) => {
     throw error;
   }
 }}));
+
 
 
 //post  Deletes a book
